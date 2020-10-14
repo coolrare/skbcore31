@@ -20,13 +20,12 @@ namespace api1.Controllers
         }
 
         [HttpGet("")]
-        public ActionResult<IEnumerable<AppSetting>> GetAppSettings()
+        public ActionResult<AppSetting> GetAppSettings()
         {
-            return new List<AppSetting> {
-                new AppSetting() {
-                    ProjectName = Configuration.GetValue<string>("AppSettings:ProjectName"),
-                    SmtpIp = Configuration.GetValue<string>("AppSettings:SmtpIp")
-                }
+            return new AppSetting()
+            {
+                ProjectName = Configuration.GetValue<string>("AppSettings:ProjectName"),
+                SmtpIp = Configuration.GetValue<string>("AppSettings:SmtpIp")
             };
         }
     }

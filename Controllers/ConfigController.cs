@@ -12,23 +12,17 @@ namespace api1.Controllers
     [ApiController]
     public class ConfigController : ControllerBase
     {
-        public IConfiguration Configuration { get; }
+        public IAppSetting Config { get; }
 
-        public ConfigController(IConfiguration configuration)
+        public ConfigController(IAppSetting config)
         {
-            Configuration = configuration;
+            Config = config;
         }
 
         [HttpGet("")]
         public ActionResult<AppSetting> GetAppSettings()
         {
-            var appSettings = Configuration.GetSection("AppSettings");
-
-            return new AppSetting()
-            {
-                ProjectName = appSettings.GetValue<string>("ProjectName"),
-                SmtpIp = appSettings.GetValue<string>("SmtpIp")
-            };
+            return Config as AppSetting;
         }
     }
 }

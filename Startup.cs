@@ -26,14 +26,7 @@ namespace api1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var appSettings = Configuration.GetSection("AppSettings");
-            var config = new AppSetting()
-            {
-                ProjectName = appSettings.GetValue<string>("ProjectName"),
-                SmtpIp = appSettings.GetValue<string>("SmtpIp")
-            };
-
-            services.AddSingleton<IAppSetting>(config);
+            services.Configure<AppSetting>(Configuration.GetSection("AppSettings"));
 
             services.AddControllers();
         }

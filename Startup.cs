@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api1.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,20 +39,32 @@ namespace api1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.Use(async (context, next) =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                await context.Response.WriteAsync("A");
+                try
+                {
+                    await next();
 
-            app.UseHttpsRedirection();
+                }
+                catch (System.Exception)
+                {
 
-            app.UseRouting();
+                    throw;
+                }
+                await context.Response.WriteAsync("Z");
+            });
 
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            app.Use(async (context, next) =>
             {
-                endpoints.MapControllers();
+                await context.Response.WriteAsync("123");
+                await next();
+                await context.Response.WriteAsync("456");
+            });
+
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("WILL");
             });
         }
     }

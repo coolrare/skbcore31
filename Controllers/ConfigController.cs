@@ -22,10 +22,12 @@ namespace api1.Controllers
         [HttpGet("")]
         public ActionResult<AppSetting> GetAppSettings()
         {
+            var appSettings = Configuration.GetSection("AppSettings");
+
             return new AppSetting()
             {
-                ProjectName = Configuration.GetValue<string>("AppSettings:ProjectName"),
-                SmtpIp = Configuration.GetValue<string>("AppSettings:SmtpIp")
+                ProjectName = appSettings.GetValue<string>("ProjectName"),
+                SmtpIp = appSettings.GetValue<string>("SmtpIp")
             };
         }
     }

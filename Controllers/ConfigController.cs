@@ -15,7 +15,7 @@ namespace api1.Controllers
     {
         public AppSetting Options { get; }
 
-        public ConfigController(IOptions<AppSetting> options)
+        public ConfigController(IOptionsSnapshot<AppSetting> options)
         {
             Options = options.Value;
         }

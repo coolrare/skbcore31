@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,32 +39,23 @@ namespace api1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.Use(async (context, next) =>
+            if (env.IsDevelopment())
             {
-                await context.Response.WriteAsync("A");
-                try
-                {
-                    await next();
+                app.UseDeveloperExceptionPage();
+            }
 
-                }
-                catch (System.Exception)
-                {
+            app.UseHttpsRedirection();
 
-                    throw;
-                }
-                await context.Response.WriteAsync("Z");
-            });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
-            app.Use(async (context, next) =>
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                await context.Response.WriteAsync("123");
-                await next();
-                await context.Response.WriteAsync("456");
-            });
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("WILL");
+                endpoints.MapControllers();
             });
         }
     }
